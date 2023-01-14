@@ -7,6 +7,12 @@ Update existing self (assume bot account) comment that find by regexp.
 
 Motivate to update specific comment is reason why I create this.
 
+## Install
+
+```bash
+gh ext install r-plus/gh-comment-update
+```
+
 ## Usage
 
 ```bash
