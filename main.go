@@ -26,7 +26,7 @@ func cli() error {
 	flag.Parse()
 
 	if *issueFlag == 0 || *regexpFlag == "" || *bodyFlag == "" {
-		return fmt.Errorf("regexp and body flags are required")
+		return fmt.Errorf("issue, regexp and body flags are required")
 	}
 
 	var repo repository.Repository
