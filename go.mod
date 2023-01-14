@@ -1,6 +1,6 @@
 module github.com/r-plus/gh-comment-update
 
-go 1.18
+go 1.19
 
 require github.com/cli/go-gh v1.0.0
 
