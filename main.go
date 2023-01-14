@@ -18,13 +18,14 @@ func main() {
 }
 
 func cli() error {
+	issueFlag := flag.Int("issue", 0, "Issue or PR number")
 	regexpFlag := flag.String("regexp", "", "Search first matched comment by regexp")
 	bodyFlag := flag.String("body", "", "Update body text")
 	repoOverride := flag.String(
 		"repo", "", "Specify a repository. If omitted, uses current repository")
 	flag.Parse()
 
-	if *regexpFlag == "" || *bodyFlag == "" {
+	if *issueFlag == 0 || *regexpFlag == "" || *bodyFlag == "" {
 		return fmt.Errorf("regexp and body flags are required")
 	}
 
@@ -47,7 +48,7 @@ func cli() error {
 	query := fmt.Sprintf(`{
 		repository(owner: "%s", name: "%s") {
 			id
-			issue(number: 1) {
+			issue(number: %d) {
 				id
 				comments(first: 100) {
 					edges {
@@ -60,7 +61,7 @@ func cli() error {
 				}
 			}
 		}
-	}`, repo.Owner(), repo.Name())
+	}`, repo.Owner(), repo.Name(), *issueFlag)
 
 	type Comment struct {
 		Id              string
