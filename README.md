@@ -18,3 +18,9 @@ gh ext install r-plus/gh-comment-update
 ```bash
 gh comment-update --issue <number> --regexp 'regexp to determine which comments to update' --body 'body of comment'
 ```
+
+## Debug
+
+```bash
+go run . --issue <number> --regexp <regexp> --body <body>
+```
