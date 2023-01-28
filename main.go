@@ -48,14 +48,28 @@ func cli() error {
 	query := fmt.Sprintf(`{
 		repository(owner: "%s", name: "%s") {
 			id
-			issue(number: %d) {
-				id
-				comments(first: 100) {
-					edges {
-						node {
-							id
-							body
-							viewerDidAuthor
+			issueOrPullRequest(number: %d) {
+				... on Issue {
+					id
+					comments(first: 100) {
+						edges {
+							node {
+								id
+								body
+								viewerDidAuthor
+							}
+						}
+					}
+				}
+				... on PullRequest {
+					id
+					comments(first: 100) {
+						edges {
+							node {
+								id
+								body
+								viewerDidAuthor
+							}
 						}
 					}
 				}
@@ -71,7 +85,7 @@ func cli() error {
 
 	response := struct {
 		Repository struct {
-			Issue struct {
+			IssueOrPullRequest struct {
 				Comments struct {
 					Edges []struct {
 						Node Comment
@@ -89,7 +103,7 @@ func cli() error {
 
 	r := regexp.MustCompile(*regexpFlag)
 
-	for _, edge := range response.Repository.Issue.Comments.Edges {
+	for _, edge := range response.Repository.IssueOrPullRequest.Comments.Edges {
 		if edge.Node.ViewerDidAuthor && r.MatchString(edge.Node.Body) {
 			match = &edge.Node
 			break
